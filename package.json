@@ -1,0 +1,31 @@
+{
+  "name": "syllable",
+  "version": "1.0.0",
+  "description": "A minimalist practice suite focused on the \"flow\" of natural conversation. Lexflow offers timed speaking prompts and repeat-sentence challenges, helping non-native speakers build the muscle memory needed for spontaneous, confident communication in professional settings",
+  "homepage": "https://github.com/Mukesh-kumar-Paswan/Syllable#readme",
+  "bugs": {
+    "url": "https://github.com/Mukesh-kumar-Paswan/Syllable/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mukesh-kumar-Paswan/Syllable.git"
+  },
+  "license": "ISC",
+  "author": "team Vocal",
+  "type": "commonjs",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "dotenv": "^17.3.1",
+    "ejs": "^4.0.1",
+    "ejs-mate": "^4.0.0",
+    "express": "^5.2.1",
+    "joi": "^18.0.2",
+    "method-override": "^3.0.0",
+    "mongoose": "^9.2.3"
+  }
+}
