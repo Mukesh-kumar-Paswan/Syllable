@@ -1,0 +1,34 @@
+<% layout("./layouts/boilerplate.ejs") -%>
+
+<div class="container">
+<h1>Edit Question</h1>
+
+<form action="/questions/<%= question._id %>?_method=PUT" method="POST">
+
+<input type="text" name="question.title" value="<%= question.title %>" required>
+<br><br>
+
+<% question.options.forEach((opt, i) => { %>
+
+    <input type="text" name="question.options[]" value="<%= opt %>" required>
+
+    <label>
+        <input type="radio" 
+               name="question.answer" 
+               value="<%= i %>" 
+               <%= question.answer === i ? "checked" : "" %> >
+        Correct
+    </label>
+
+    <br><br>
+
+<% }) %>
+
+<button>Update</button>
+
+</form>
+
+<br>
+
+<a href="/vercent">Back</a>
+</div>

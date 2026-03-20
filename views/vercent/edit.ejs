@@ -1,0 +1,24 @@
+<% layout("./layouts/boilerplate.ejs") -%>
+
+<div class="container">
+<h1>Edit Module</h1>
+
+<form action="/vercent/<%= module._id %>?_method=PUT" method="POST">
+
+<input type="text" name="title" value="<%= module.title %>">
+<br><br>
+
+<input type="text" name="description" value="<%= module.description %>">
+<br><br>
+
+<textarea name="ProblemStatement"><%= module.ProblemStatement %></textarea>
+<br><br>
+
+<button>Update</button>
+
+</form>
+
+<br>
+
+<a href="/vercent">Back</a>
+</div>

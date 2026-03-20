@@ -6,10 +6,6 @@ const questionSchema = new Schema ({
         type : String,
         required : true,
     },
-    para : {
-        type : String,
-        required : true,
-    },
     options : [
         {
             type : String,

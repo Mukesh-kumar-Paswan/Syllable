@@ -1,0 +1,43 @@
+<% layout("./layouts/boilerplate.ejs") -%>
+
+<div class="container">
+<h1>Result</h1>
+
+<h2>Score: <%= score %> / <%= total %></h2>
+
+<p>Percentage: <%= percentage.toFixed(0) %>%</p>
+
+<hr>
+
+<% evaluatedAnswers.forEach((item, index) => { %>
+
+<div>
+
+    <p><strong><%= index + 1 %>. <%= item.question.title %></strong></p>
+
+    <% item.question.options.forEach((opt, i) => { %>
+
+        <div>
+
+            <%= opt %>
+
+            <% if(i === item.correctAnswer){ %>
+                (Correct)
+            <% } %>
+
+            <% if(i === item.selectedAnswer && !item.isCorrect){ %>
+                (Your Answer)
+            <% } %>
+
+        </div>
+
+    <% }) %>
+
+</div>
+
+<hr>
+
+<% }) %>
+
+<a href="/vercent">Go Back</a>
+</div>

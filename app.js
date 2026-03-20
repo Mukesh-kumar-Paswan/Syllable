@@ -1,79 +1,39 @@
-// express
 const express = require("express");
 const app = express();
-
-// mongoose
 const mongoose = require("mongoose");
-
-// additional
 const path = require("path");
 const methodOverride = require("method-override");
-
-// ejs mate
 const ejsMate = require("ejs-mate");
-const { log } = require("console");
 
-// Setting ejs
-app.set("view engine" , "ejs");
-app.engine("ejs" , ejsMate)
+const mongoURL = "mongodb://127.0.0.1:27017/versantDB";
 
-// setting path for view folder
-app.set("views" , path.join(__dirname , "views"));
+// Routes
+const moduleRoutes = require("./routes/moduleRoutes");
+const questionRoutes = require("./routes/questionRoutes");
 
-// Important Middlewares
-app.use(express.urlencoded({extended:true}));
+// DB Connection
+mongoose.connect(mongoURL)
+  .then(() => console.log("Mongo Connected"))
+  .catch(err => console.log(err));
+
+// Middleware
+app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "views"));
+app.engine("ejs", ejsMate);
+
+app.use(express.static(path.join(__dirname, "public")));
+app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
-app.use(express.static(path.join(__dirname , "public")));
 
-// Express Error 
-const ExpressError = require("./Utils/ExpressError");
-
-// Routes 
-const questionRoute = require("./routes/question");
-const attemptRoute = require("./routes/attempt");
-
-// starting the port
-const port = 8080;
-
-app.listen(port , () => {
-    console.log(`http://localhost:${port}`);
+// Routes
+app.get("/", (req, res) => {
+  res.send("<h1>Welcome to Syllable</h1>");
 });
 
-// starting mongoose server
-async function main () {
-    try {
-        await mongoose.connect("mongodb://127.0.0.1:27017/syllable");
-        console.log("Successfully Connected To Mongoose Server");
-    } catch (err) {
-        console.log("Sorry For The Error Please Try Again : " , err);
-    }
-};
+app.use("/vercent", moduleRoutes);
+app.use("/questions", questionRoutes);
 
-main();
-
-// Home Page Route
-app.get("/" , (req , res) => {
-    res.send(`<h1>Thankyou for visiting. Work in progress :) <h1>`);
+// Server
+app.listen(8080, () => {
+  console.log("Server Started");
 });
-
-// Pages Routes Start
-
-// Question Page
-app.use("/syllable" , questionRoute);
-
-// Attempt Page
-// app.use("/syllable/answer" , attemptRoute);
-
-
-// Pages Routes End
-
-// Error Middleware
-app.use((req , res , next) => {
-    next(new ExpressError (404 , "Page Not Found"));
-});
-
-// Error handling page
-app.use((err , req , res ,next) => {
-    let {status = 500 , message = "Some Thing went Wrong"} = err;
-    res.status(status).render("Pages/error.ejs" , {err : message});
-})

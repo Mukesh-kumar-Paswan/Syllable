@@ -1,0 +1,86 @@
+<% layout("./layouts/boilerplate.ejs") -%>
+
+<div class="container">
+
+<!-- ================= MODULE INFO ================= -->
+
+<h1><%= module.title %></h1>
+<p><%= module.description %></p>
+
+<hr>
+
+<h3>Situation:</h3>
+<p><%= module.ProblemStatement %></p>
+
+<hr>
+
+<!-- ================= QUIZ SECTION ================= -->
+
+<h2>Answer the Questions</h2>
+
+<form action="/vercent/attempt" method="POST">
+
+<input type="hidden" name="moduleId" value="<%= module._id %>">
+
+<% module.questions.forEach((q, index) => { %>
+
+<div class="card">
+
+    <p><strong><%= index + 1 %>. <%= q.title %></strong></p>
+
+    <% q.options.forEach((opt, i) => { %>
+
+        <label>
+            <input type="radio" 
+                   name="answers[<%= index %>][selectedAnswer]" 
+                   value="<%= i %>" required>
+            <%= opt %>
+        </label>
+        <br>
+
+    <% }) %>
+
+    <input type="hidden" 
+           name="answers[<%= index %>][question]" 
+           value="<%= q._id %>">
+
+</div>
+
+<% }) %>
+
+<br>
+<button type="submit">Submit</button>
+
+</form>
+
+<hr>
+
+<!-- ================= ACTIONS ================= -->
+
+<a href="/vercent">⬅ Back</a>
+<br><br>
+<a href="/questions/new/<%= module._id %>">➕ Add Question</a>
+
+<hr>
+
+<!-- ================= ADMIN SECTION ================= -->
+
+<h2>Manage Questions</h2>
+
+<% module.questions.forEach((q) => { %>
+
+<div class="card">
+
+    <p><strong><%= q.title %></strong></p>
+
+    <a href="/questions/<%= q._id %>/edit">✏️ Edit</a>
+
+    <form action="/questions/<%= q._id %>/<%= module._id %>?_method=DELETE" method="POST" style="display:inline;">
+        <button type="submit">❌ Delete</button>
+    </form>
+
+</div>
+
+<% }) %>
+
+</div>

@@ -1,22 +1,50 @@
 const mongoose = require("mongoose");
-const Question = require("../models/question");
-const initData = require("./data.js");
+
+const moduleData = require("./moduleData.js");
+const {
+  teamMeetingQuestions,
+  officeCommunicationQuestions,
+} = require("./questionData.js");
+
+const Module = require("../models/module.js");
+const Question = require("../models/question.js");
+
+const mongoURL = "mongodb://127.0.0.1:27017/versantDB";
 
 async function main() {
-    try {
-    await mongoose.connect("mongodb://127.0.0.1:27017/syllable");
-    console.log("Successfully Connected to The Mongoose Server");
+  try {
+    await mongoose.connect(mongoURL);
+    console.log("Connected to MongoDB");
+
+    await initDB();
   } catch (err) {
-    console.log(`Sorry for error ${err}`);
+    console.log(err);
   }
 }
 
-main();
-
-const seedDB = async () => {
+const initDB = async () => {
+  try {
+    await Module.deleteMany({});
     await Question.deleteMany({});
-    await Question.insertMany(initData.data);
-    console.log("Successfully Data is Initialised With Sample Data");
+
+    const officeQuestions = await Question.insertMany(
+      officeCommunicationQuestions,
+    );
+    const teamQuestions = await Question.insertMany(teamMeetingQuestions);
+    
+    moduleData.modules[0].questions = officeQuestions.map((q) => q._id);
+    moduleData.modules[1].questions = teamQuestions.map((q) => q._id);
+
+    // Insert modules
+    await Module.insertMany(moduleData.modules);
+
+    console.log("Database initialized successfully");
+  } catch (err) {
+    console.log(err);
+  }
 };
 
-seedDB();
+main();
+
+// console.log(moduleData.modules);
+// console.log(teamMeetingQuestions);

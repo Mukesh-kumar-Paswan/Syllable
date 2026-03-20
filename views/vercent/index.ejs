@@ -1,0 +1,28 @@
+<% layout("./layouts/boilerplate.ejs") -%>
+
+<div class="container">
+<h1>All Modules</h1>
+
+<a href="/vercent/new">Create New Module</a>
+
+<hr>
+
+<% modules.forEach(module => { %>
+
+<div>
+    <h2><%= module.title %></h2>
+
+    <p><%= module.description %></p>
+
+    <a href="/vercent/<%= module._id %>">Start</a>
+    <a href="/vercent/<%= module._id %>/edit">Edit</a>
+
+    <form action="/vercent/<%= module._id %>?_method=DELETE" method="POST">
+        <button>Delete</button>
+    </form>
+</div>
+
+<hr>
+
+<% }) %>
+</div>

@@ -1,0 +1,47 @@
+<% layout("./layouts/boilerplate.ejs") -%>
+
+<div class="container">
+
+<h1>Add Question</h1>
+
+<form action="/questions/<%= moduleId %>" method="POST">
+
+<label>Question Title</label>
+<input type="text" name="question.title" required>
+
+<br><br>
+
+<label>Options</label>
+
+<% for(let i = 0; i < 4; i++) { %>
+
+    <div class="option-row">
+
+        <input type="text" 
+               name="question.options[]" 
+               placeholder="Option <%= i + 1 %>" 
+               required>
+
+        <label>
+            <input type="radio" 
+                   name="question.answer" 
+                   value="<%= i %>" 
+                   required>
+            Correct
+        </label>
+
+    </div>
+
+<% } %>
+
+<br>
+
+<button type="submit">Add Question</button>
+
+</form>
+
+<br>
+
+<a href="/vercent/<%= moduleId %>">Back</a>
+
+</div>
